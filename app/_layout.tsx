@@ -25,16 +25,8 @@ const queryClient = new QueryClient({
   },
 });
 
-declare global {
-  interface Window {
-    __TANSTACK_QUERY_CLIENT__:
-    import ("@tanstack/query-core").QueryClient;
-  }
-}
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  useTanStackQueryDevTools(queryClient);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -47,11 +39,7 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", title: "Modal" }}
-          /> */}
-          <Stack.Screen name="pokemon/[id]" />
+          <Stack.Screen name="pokemon/[name]" />
           {/* here you ca add the individual pokemon page */}
         </Stack>
         <StatusBar style="auto" />
