@@ -6,28 +6,33 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { ICard } from "@/utils/interfaces";
 import { useRouter } from "expo-router";
+import { PokemonCardProps } from "@/types/pokemon";
 
-export function Card({ data }: { data: ICard }) {
-    const router = useRouter();
-  
+export function Card({ pokemon, onPress }: PokemonCardProps) {
+  const router = useRouter();
+
+  const handlePress = () => {
+    if (onPress) return pokemon.id;
+    router.push({
+      pathname: "/pokemon/[id]",
+      params: { id: String(pokemon.id), name: pokemon.name },
+    });
+  };
+
   return (
     <View style={style.shadowWrapper}>
-      <Pressable onPress={() => router.push({
-          pathname: "/pokemon/[id]",
-          params: { id: String(data.id), name: data.name },
-        })} style={style.card}>
+      <Pressable onPress={handlePress} style={style.card}>
         <View style={style.imageContainer}>
-          {data.image ? (
+          {pokemon.imageUrl ? (
             <ImageBackground
-              source={{ uri: data.image }}
+              source={{ uri: pokemon.imageUrl }}
               style={{ flex: 1 }}
               resizeMode="cover"
             >
               <View style={style.tagContainer}>
                 <Text style={style.tagText}>
-                  {String(data.id).padStart(3, "0")}
+                  {String(pokemon.id).padStart(3, "0")}
                 </Text>
               </View>
             </ImageBackground>
@@ -35,23 +40,18 @@ export function Card({ data }: { data: ICard }) {
             <View style={{ flex: 1, backgroundColor: "pink" }}>
               <View style={style.tagContainer}>
                 <Text style={style.tagText}>
-                  {String(data.id).padStart(3, "0")}
+                  {String(pokemon.id).padStart(3, "0")}
                 </Text>
               </View>
             </View>
           )}
         </View>
         <View style={style.textContainer}>
-          <Text style={style.text}>{data.name}</Text>
+          <Text style={style.text}>{pokemon.name}</Text>
         </View>
       </Pressable>
     </View>
   );
-}
-function test(id: string | number) {
-  Alert.alert(`${id}`, "You can now press on the poke card. Congrats!", [
-    { text: "OK", onPress: () => console.log("OK Pressed") },
-  ]);
 }
 
 const style = StyleSheet.create({

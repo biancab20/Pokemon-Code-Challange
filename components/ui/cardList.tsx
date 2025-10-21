@@ -1,8 +1,8 @@
 import { View, FlatList, StyleSheet } from "react-native";
-import { ICard } from "@/utils/interfaces";
 import { Card } from "@/components/ui/card";
+import type { PokemonSummary } from "@/types/pokemon";
 
-export function CardList({ pokeData }: { pokeData: ICard[] }) {
+export function CardList({ pokeData }: { pokeData: PokemonSummary[] }) {
   return (
     <FlatList
       style={style.list}
@@ -15,7 +15,7 @@ export function CardList({ pokeData }: { pokeData: ICard[] }) {
       
       renderItem={({ item }) => (
         <View style={{ flex: 1 }}>
-          <Card data={item} />
+          <Card pokemon={item} />
         </View>
       )}
     ></FlatList>
