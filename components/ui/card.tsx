@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ImageBackground,
   Pressable,
-  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { PokemonCardProps } from "@/types/pokemon";
@@ -27,7 +26,7 @@ export function Card({ pokemon, onPress }: PokemonCardProps) {
           {pokemon.imageUrl ? (
             <ImageBackground
               source={{ uri: pokemon.imageUrl }}
-              style={{ flex: 1 }}
+              style={{ flex: 1, backgroundColor: "rgba(246, 246, 255, 1)" }}
               resizeMode="cover"
             >
               <View style={style.tagContainer}>
@@ -98,5 +97,6 @@ const style = StyleSheet.create({
     textAlign: "left",
     fontWeight: 500,
     color: "#0E0940",
+    textTransform: "capitalize",
   },
 });

@@ -9,3 +9,14 @@ export const buildPreviewImageUrl = (id: number): string =>
 
 export const buildDetailPageImageUrl = (id: number): string =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+
+export const parseNextOffset = (nextUrl?: string | null): number | undefined => {
+  if (!nextUrl) return undefined;
+  try {
+    const u = new URL(nextUrl);
+    const off = u.searchParams.get("offset");
+    return off ? Number(off) : undefined;
+  } catch {
+    return undefined;
+  }
+};

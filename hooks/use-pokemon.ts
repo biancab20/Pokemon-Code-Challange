@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { PokeApiService } from "@/services/pokemon-api";
 import type { NamedAPIResource } from "pokenode-ts";
 import type { PokemonSummary } from "@/types/pokemon";
@@ -6,6 +6,7 @@ import {
   extractIdFromUrl,
   buildDetailPageImageUrl,
   buildPreviewImageUrl,
+  parseNextOffset,
 } from "@/utils/helpers";
 
 const mapForPreview = (resource: NamedAPIResource): PokemonSummary => {
@@ -31,3 +32,19 @@ export const usePokemonList = (offset: number = 0, limit: number = 150) => {
     },
   });
 };
+
+export function useInfinitePokemonList(limit: number=50) {
+  return useInfiniteQuery({
+    queryKey:["pokemon-infinite-list", limit],
+    queryFn: async ({ pageParam = 0 }) => {
+      const data = await PokeApiService.listPokemons(pageParam, limit);
+      return {
+        count: data.count,
+        nextOffset: parseNextOffset(data.next),
+        results: data.results.map(mapForPreview),
+      };
+    },
+    getNextPageParam: (lastPage) => lastPage.nextOffset,
+    initialPageParam: 0,
+  });
+}

@@ -1,16 +1,22 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { CardList } from "@/components/ui/cardList";
 import { SearchBar } from "@/components/ui/searchBar";
-import { usePokemonList } from "@/hooks/use-pokemon";
+import { useInfinitePokemonList } from "@/hooks/use-pokemon";
 
 export default function Pokemons() {
-  const {  data, isLoading, error } = usePokemonList(0, 150);
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfinitePokemonList(50);
+  
+  const pages = data?.pages ?? [];
+  const items = pages.flatMap((p) => p.results);
+  //const total = pages[0]?.count ?? 0;
 
   if (isLoading) {
     return (
@@ -30,18 +36,12 @@ export default function Pokemons() {
     );
   }
 
-  const count = data?.count ?? 0;
-  const previews = data?.results ?? [];
-
-
   return (
     <SafeAreaView style={style.view} edges={["top", "left", "right"]}>
       <SearchBar></SearchBar>
-      <Text style={style.title}>
-        All Pokémon ({count})
-      </Text>
+      <Text style={style.title}>All Pokémon ({items.length})</Text>
 
-      <CardList pokeData={previews}></CardList>
+      <CardList data={items} isFetchingNextPage={isFetchingNextPage} onEndReached={() => { if (hasNextPage && !isFetchingNextPage) fetchNextPage();}}></CardList>
     </SafeAreaView>
   );
 }

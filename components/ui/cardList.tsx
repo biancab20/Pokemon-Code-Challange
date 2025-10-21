@@ -1,18 +1,32 @@
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 import { Card } from "@/components/ui/card";
 import type { PokemonSummary } from "@/types/pokemon";
 
-export function CardList({ pokeData }: { pokeData: PokemonSummary[] }) {
+type Props = {
+  data: PokemonSummary[];
+  onEndReached?: () => void;
+  isFetchingNextPage?: boolean;
+};
+
+export function CardList({ data, onEndReached, isFetchingNextPage }: Props) {
   return (
     <FlatList
       style={style.list}
-      data={pokeData}
+      data={data}
       keyExtractor={(item) => String(item.id)}
       numColumns={2}
-      contentContainerStyle={{ gap: 12, paddingBottom: 88 }}
+      contentContainerStyle={{ gap: 12, paddingBottom: 88, paddingTop: 10}}
       columnWrapperStyle={{ alignItems: "stretch", gap: 12 }}
       showsVerticalScrollIndicator={false}
-      
+      onEndReachedThreshold={0.5}
+      onEndReached={onEndReached}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <View style={{ paddingVertical: 16 }}>
+            <ActivityIndicator />
+          </View>
+        ) : null
+      }
       renderItem={({ item }) => (
         <View style={{ flex: 1 }}>
           <Card pokemon={item} />
@@ -25,6 +39,6 @@ export function CardList({ pokeData }: { pokeData: PokemonSummary[] }) {
 const style = StyleSheet.create({
   list: {
     flex: 1,
-    marginHorizontal: 18,
+    paddingHorizontal:18,
   },
 });

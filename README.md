@@ -50,12 +50,12 @@ In the output, you'll find options to open the app in a
     - [ ] Fetching Pokémon evolution chain.
 
 #### Project setup
-- [ ] Tanstack Query for API calls.
-- [ ] Expo Router for navigation.
+- [x] Tanstack Query for API calls.
+- [x] Expo Router for navigation.
 - [ ] SQLite for local storage.
 - [ ] Uses Typescript with no TS errors.
 - [ ] Uses ESLint with no ESLint errors. (ideally use [React Compiler Linter](https://docs.expo.dev/guides/react-compiler/#enabling-the-linter))
-- [ ] Uses Separation of Concerns (determine a project structure that follows this principle).
+- [x] Uses Separation of Concerns (determine a project structure that follows this principle).
 - [ ] Expo Font is used to implement [the font](./assets/fonts.zip).
 
 
@@ -64,7 +64,7 @@ Each optional item is worth 1 extra point.
 
 - [ ] Use of animations (e.g. loading in UI elements).
 - [ ] Dark mode support (making use of theming).
-- [ ] Pokémon list is paginated and infinite scroll is used.
+- [x] Pokémon list is paginated and infinite scroll is used.
 - [ ] Clean Typescript: no use of `any`, typecasting `as SomeType`, or TS ignore comments.
 - [ ] Pixel Perfect Design on either iOS or Android.
 - [ ] No bugs, console errors and use of console.log.
