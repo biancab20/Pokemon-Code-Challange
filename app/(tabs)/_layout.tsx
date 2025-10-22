@@ -8,6 +8,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { BlurView } from "expo-blur";
 import { Platform } from "react-native";
+import { Icon } from "@/components/icons/Icon";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -32,7 +33,7 @@ export default function TabLayout() {
             intensity={50} // 0–100
             style={StyleSheet.absoluteFill}
             experimentalBlurMethod={
-            Platform.OS === "android" ? "dimezisBlurView" : undefined
+              Platform.OS === "android" ? "dimezisBlurView" : undefined
             }
           />
         ),
@@ -44,8 +45,12 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Pokémons",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="pokeball" size={24} color={color}  />
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={ focused  ? "pokeballFilled" : "pokeball"}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
@@ -53,8 +58,12 @@ export default function TabLayout() {
         name="favorites"
         options={{
           title: "Favorites",
-          tabBarIcon: ({ color }) => (
-            <Feather name="heart" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={ focused  ? "heartFilled" : "heart"}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
