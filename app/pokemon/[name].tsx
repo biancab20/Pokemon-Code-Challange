@@ -1,6 +1,6 @@
 import { PokemonImage } from "@/components/ui/pokemon-image";
 import { usePokemonDetails } from "@/hooks/use-pokemon";
-import { getTypeColor } from "@/utils/helpers";
+import { getTypeColor, paramToString } from "@/utils/helpers";
 import { useLocalSearchParams } from "expo-router";
 import {
   ActivityIndicator,
@@ -12,8 +12,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PokemonDetailScreen() {
-  const { name } = useLocalSearchParams();
-  const { data, isLoading, error } = usePokemonDetails(name as string);
+  const { name: rawName } = useLocalSearchParams<{ name: string }>();
+
+  const name = paramToString(rawName);
+  const { data, isLoading, error } = usePokemonDetails(name);
+
+  if (!name) return null;
 
   if (isLoading) {
     return (
@@ -84,17 +88,23 @@ export default function PokemonDetailScreen() {
           <Text>Height: {(about.height / 10).toFixed(1)} m</Text>
           <Text>Weight: {(about.weight / 10).toFixed(1)} kg</Text>
 
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Abilities</Text>
-          <Text>{about.abilities.map(a => a.ability.name).join(", ")}</Text>
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
+            Abilities
+          </Text>
+          <Text>{about.abilities.map((a) => a.ability.name).join(", ")}</Text>
 
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Base Stats</Text>
-          {about.stats.map(s => (
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
+            Base Stats
+          </Text>
+          {about.stats.map((s) => (
             <Text key={s.stat.name}>
               {s.stat.name}: {s.base_stat}
             </Text>
           ))}
 
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Evolution</Text>
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
+            Evolution
+          </Text>
           <Text>
             {evolution.map((n, i) => (i === 0 ? n.name : ` → ${n.name}`))}
           </Text>
@@ -156,19 +166,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
   },
   imageContainer: {
-    // alignItems: "center",
-    // paddingVertical: 20,
-    // backgroundColor: "#fff",
-    //marginHorizontal: 16,
-    // borderRadius: 12,
-    // marginBottom: 16,
     height: 200,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
   },
   halfBackground: {
-    ...StyleSheet.absoluteFillObject, 
+    ...StyleSheet.absoluteFillObject,
   },
 
   topHalf: {
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
   },
   bottomHalf: {
     flex: 1,
-    backgroundColor: "#FFFFFF", 
+    backgroundColor: "#FFFFFF",
   },
   placeholderText: {
     fontSize: 16,

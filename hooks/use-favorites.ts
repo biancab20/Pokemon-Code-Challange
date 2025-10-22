@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { databaseService } from '@/services/database';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { databaseService } from "@/services/database";
 
 // Hook to get all favorite Pokemon
 export const useFavorites = () => {
   return useQuery({
-    queryKey: ['favorites'],
+    queryKey: ["favorites"],
     queryFn: () => databaseService.getAllFavorites(),
     staleTime: 0, // Always fetch fresh data for favorites
   });
@@ -13,7 +13,7 @@ export const useFavorites = () => {
 // Hook to check if a Pokemon is favorited
 export const useIsFavorite = (pokemonId: number) => {
   return useQuery({
-    queryKey: ['is-favorite', pokemonId],
+    queryKey: ["is-favorite", pokemonId],
     queryFn: () => databaseService.isFavorite(pokemonId),
     staleTime: 0,
   });
@@ -24,11 +24,11 @@ export const useToggleFavorite = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ 
-      pokemonId, 
-      name, 
-      imageUrl, 
-      isCurrentlyFavorite 
+    mutationFn: async ({
+      pokemonId,
+      name,
+      imageUrl,
+      isCurrentlyFavorite,
     }: {
       pokemonId: number;
       name: string;
@@ -43,8 +43,10 @@ export const useToggleFavorite = () => {
     },
     onSuccess: (_, variables) => {
       // Invalidate and refetch favorites
-      queryClient.invalidateQueries({ queryKey: ['favorites'] });
-      queryClient.invalidateQueries({ queryKey: ['is-favorite', variables.pokemonId] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      queryClient.invalidateQueries({
+        queryKey: ["is-favorite", variables.pokemonId],
+      });
     },
   });
 };

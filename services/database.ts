@@ -82,7 +82,7 @@ class DatabaseService {
 
     try {
       const result = await this.db.getAllAsync<FavoritePokemon>(
-        "SELECT * FROM favorites ORDER BY created_at DESC"
+        "SELECT id, name, image_url AS imageUrl, created_at FROM favorites ORDER BY created_at DESC"
       );
       return result;
     } catch (error) {

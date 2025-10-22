@@ -28,3 +28,9 @@ export function getTypeColor(type: PokemonType | string): string {
   const name = typeof type === "string" ? type : type.type.name;
   return TYPE_COLORS[name.toLowerCase()] ?? "#9AA0A6"; 
 }
+
+export function paramToString(p: string | string[] | undefined): string {
+  if (Array.isArray(p)) return p[0];
+  if (typeof p === "string") return p
+  throw new Error("Expected a route parameter but got undefined" + p);
+}

@@ -1,36 +1,38 @@
-import { useIsFavorite, useToggleFavorite } from '@/hooks/use-favorites';
-import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { useIsFavorite, useToggleFavorite } from "@/hooks/use-favorites";
+import { TouchableOpacity } from "react-native";
+import * as Haptics from "expo-haptics";
+import { Icon } from "../icons/Icon";
+import { PokemonSummary } from "@/types/pokemon";
 
-interface FavoriteProps {
-  pokemonId: number;
-  pokemonName: string;
-  imageUrl?: string;
-}
 
-export default function Favorite({ pokemonId, pokemonName, imageUrl }: FavoriteProps) {
-  const { data: isFavorited, isLoading } = useIsFavorite(pokemonId);
+export default function Favorite({ ...props }: PokemonSummary) {
+  const { data: isFavorited, isLoading } = useIsFavorite(props.id);
   const toggleFavorite = useToggleFavorite();
 
-  const handleToggle = () => {
+  const handleToggle = async () => {
     if (isLoading) return;
 
+    await Haptics.impactAsync(
+      isFavorited
+        ? Haptics.ImpactFeedbackStyle.Light
+        : Haptics.ImpactFeedbackStyle.Medium
+    );
+
     toggleFavorite.mutate({
-      pokemonId,
-      name: pokemonName,
-      imageUrl,
+      pokemonId: props.id,
+      name: props.name,
+      imageUrl: props.imageUrl,
       isCurrentlyFavorite: isFavorited || false,
     });
   };
 
   return (
     <TouchableOpacity
-      style={styles.favoriteButton}
       onPress={handleToggle}
       disabled={toggleFavorite.isPending}
     >
-      <Ionicons
-        name={isFavorited ? "heart" : "heart-outline"}
+      <Icon
+        name={isFavorited ? "heartFilled" : "heart"}
         size={24}
         color={isFavorited ? "#FF4F68" : "#0E0940"}
       />
@@ -38,10 +40,3 @@ export default function Favorite({ pokemonId, pokemonName, imageUrl }: FavoriteP
   );
 }
 
-const styles = StyleSheet.create({
-  favoriteButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  },
-});

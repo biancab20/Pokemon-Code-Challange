@@ -39,7 +39,7 @@ export default function Pokemons() {
   return (
     <SafeAreaView style={style.view} edges={["top", "left", "right"]}>
       <SearchBar></SearchBar>
-      <Text style={style.title}>All Pokémon ({items.length})</Text>
+      <Text style={style.title}>All Pokémon</Text>
 
       <CardList data={items} isFetchingNextPage={isFetchingNextPage} onEndReached={() => { if (hasNextPage && !isFetchingNextPage) fetchNextPage();}}></CardList>
     </SafeAreaView>

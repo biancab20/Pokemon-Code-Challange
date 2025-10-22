@@ -40,7 +40,6 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             headerShadowVisible: false,
-            header: () => <CustomStackNav />,
           }}
         >
           <Stack.Screen
@@ -49,7 +48,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="pokemon/[name]"
-            options={{ title: "", headerShown: true }}
+            options={{ title: "", headerShown: true, header: (props) => <CustomStackNav {...props}/> }}
           />
         </Stack>
         <StatusBar style="auto" />

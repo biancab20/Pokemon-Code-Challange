@@ -11,21 +11,16 @@ import { PokemonCardProps } from "@/types/pokemon";
 export function Card({ pokemon, onPress }: PokemonCardProps) {
   const router = useRouter();
 
-  // const handlePress = (pokemonName: string) => {
-  //   //if (onPress) return pokemon.name;
-  //   router.push({
-  //     pathname: `/pokemon/${pokemonName}`,
-  //     params: { id: String(pokemon.id), name: pokemon.name },
-  //   });
-  // };
-
-   const handlePress = (pokemonName: string) => {
-    router.push(`/pokemon/${pokemonName}`);
-  };
+const handlePress = (pokemonId: number, pokemonName: string) => {
+  router.push({
+    pathname: "/pokemon/[name]",
+    params: { name: pokemonName, id: String(pokemonId) }, 
+  });
+};
 
   return (
     <View style={style.shadowWrapper}>
-      <Pressable onPress={() => handlePress(pokemon.name)} style={style.card}>
+      <Pressable onPress={() => handlePress(pokemon.id, pokemon.name )} style={style.card}>
         <View style={style.imageContainer}>
           {pokemon.imageUrl ? (
             <ImageBackground
@@ -52,6 +47,7 @@ export function Card({ pokemon, onPress }: PokemonCardProps) {
         <View style={style.textContainer}>
           <Text style={style.text}>{pokemon.name}</Text>
         </View>
+
       </Pressable>
     </View>
   );

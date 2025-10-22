@@ -1,11 +1,24 @@
 import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
 import { BlurView } from "expo-blur";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
+import Favorite from "./favorite";
+import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { buildPreviewImageUrl, paramToString } from "@/utils/helpers";
 
-export function CustomStackNav() {
+type PokemonRouteParams = {
+  name?: string | string[];
+  id?: string | string[];
+};
+
+export function CustomStackNav({ navigation, route }: NativeStackHeaderProps) {
+  const params = (route.params ?? {}) as Readonly<PokemonRouteParams>;
   const router = useRouter();
+
+  const name = paramToString(params.name);
+  const id = parseInt(paramToString(params.id));
+
+  const imageUrl = buildPreviewImageUrl(id);
 
   return (
     <View style={style.container}>
@@ -19,7 +32,6 @@ export function CustomStackNav() {
       />
 
       <View style={style.row}>
-        
         <View style={style.left}>
           <Pressable
             hitSlop={10}
@@ -34,9 +46,7 @@ export function CustomStackNav() {
         </View>
 
         <View style={style.right}>
-          <Pressable hitSlop={10} onPress={() => router.back()}>
-            <Feather name="more-horizontal" size={24} color="#000000" />
-          </Pressable>
+          {name && id ? <Favorite id={id} name={name} imageUrl={imageUrl} /> : null}
         </View>
       </View>
     </View>
@@ -50,7 +60,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 17,
     paddingBottom: 16,
     height: HEADER_HEIGHT,
-    width: '100%',
+    width: "100%",
     overflow: "hidden",
     backgroundColor: "rgba(237, 246, 255, 0.5)",
   },
