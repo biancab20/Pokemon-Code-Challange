@@ -17,6 +17,7 @@ export function mapToAbout(p: Pokemon): PokemonAbout {
     name: p.name,
     height: p.height, 
     weight: p.weight, 
+    base_xp: p.base_experience,
     types: p.types,
     abilities: p.abilities,
     stats: p.stats,

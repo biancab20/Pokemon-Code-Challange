@@ -13,6 +13,7 @@ export interface PokemonAbout {
   name: string;
   height: number;
   weight: number;
+  base_xp: number;
   types: PokemonType[];
   abilities: PokemonAbility[];
   stats: PokemonStat[];

@@ -1,13 +1,9 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Feather from "@expo/vector-icons/Feather";
 import { BlurView } from "expo-blur";
-import { Platform } from "react-native";
 import { Icon } from "@/components/icons/Icon";
 
 export default function TabLayout() {

@@ -1,4 +1,5 @@
 import { PokemonImage } from "@/components/ui/pokemon-image";
+import PokemonDetailTabs from "@/components/ui/pokemonDetailTabs";
 import { usePokemonDetails } from "@/hooks/use-pokemon";
 import { getTypeColor, paramToString } from "@/utils/helpers";
 import { useLocalSearchParams } from "expo-router";
@@ -79,11 +80,16 @@ export default function PokemonDetailScreen() {
 
           <PokemonImage id={about.id} size={200} />
         </View>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.sectionTitle}>Types</Text>
+
+        <View style={{height: 400, paddingTop: 24, backgroundColor: "white"}}>
+          {/* Remove the old sections and drop this: */}
+          <PokemonDetailTabs
+            about={about}
+            evolutionNames={evolution.map((n) => n.name)}
+          />
         </View>
 
-        <View style={styles.detailsContainer}>
+        {/* <View style={styles.detailsContainer}>
           <Text style={styles.sectionTitle}>About</Text>
           <Text>Height: {(about.height / 10).toFixed(1)} m</Text>
           <Text>Weight: {(about.weight / 10).toFixed(1)} kg</Text>
@@ -108,7 +114,8 @@ export default function PokemonDetailScreen() {
           <Text>
             {evolution.map((n, i) => (i === 0 ? n.name : ` → ${n.name}`))}
           </Text>
-        </View>
+        </View> */}
+        <View style={{ height: 268 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -117,10 +124,12 @@ export default function PokemonDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFF",
+    
   },
   scrollView: {
     flex: 1,
+    paddingBottom: 600,
   },
   loadingContainer: {
     flex: 1,
