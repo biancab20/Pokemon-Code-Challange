@@ -1,5 +1,5 @@
 import { PokemonImage } from "@/components/ui/pokemon-image";
-import { usePokemonByName } from "@/hooks/use-pokemon";
+import { usePokemonDetails } from "@/hooks/use-pokemon";
 import { getTypeColor } from "@/utils/helpers";
 import { useLocalSearchParams } from "expo-router";
 import {
@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PokemonDetailScreen() {
   const { name } = useLocalSearchParams();
-  const { data: pokemon, isLoading, error } = usePokemonByName(name as string);
+  const { data, isLoading, error } = usePokemonDetails(name as string);
 
   if (isLoading) {
     return (
@@ -26,7 +26,7 @@ export default function PokemonDetailScreen() {
     );
   }
 
-  if (error || !pokemon) {
+  if (error || !data) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
@@ -35,6 +35,7 @@ export default function PokemonDetailScreen() {
       </SafeAreaView>
     );
   }
+  const { about, evolution } = data;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,15 +43,15 @@ export default function PokemonDetailScreen() {
         <View style={styles.header}>
           <View style={styles.headerRow}>
             <Text style={styles.pokemonName}>
-              {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+              {about.name.charAt(0).toUpperCase() + about.name.slice(1)}
             </Text>
             <Text style={styles.pokemonId}>
-              #{pokemon.id.toString().padStart(3, "0")}
+              #{about.id.toString().padStart(3, "0")}
             </Text>
           </View>
 
           <View style={styles.typesContainer}>
-            {pokemon.types.map((typeInfo, index) => {
+            {about.types.map((typeInfo, index) => {
               const color = getTypeColor(typeInfo);
               const label =
                 typeInfo.type.name.charAt(0).toUpperCase() +
@@ -72,10 +73,31 @@ export default function PokemonDetailScreen() {
             <View style={styles.bottomHalf} />
           </View>
 
-          <PokemonImage id={pokemon.id} size={200} />
+          <PokemonImage id={about.id} size={200} />
         </View>
         <View style={styles.detailsContainer}>
           <Text style={styles.sectionTitle}>Types</Text>
+        </View>
+
+        <View style={styles.detailsContainer}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <Text>Height: {(about.height / 10).toFixed(1)} m</Text>
+          <Text>Weight: {(about.weight / 10).toFixed(1)} kg</Text>
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Abilities</Text>
+          <Text>{about.abilities.map(a => a.ability.name).join(", ")}</Text>
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Base Stats</Text>
+          {about.stats.map(s => (
+            <Text key={s.stat.name}>
+              {s.stat.name}: {s.base_stat}
+            </Text>
+          ))}
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Evolution</Text>
+          <Text>
+            {evolution.map((n, i) => (i === 0 ? n.name : ` → ${n.name}`))}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,22 +1,11 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { PokeApiService } from "@/services/pokemon-api";
-import type { NamedAPIResource } from "pokenode-ts";
-import type { PokemonSummary } from "@/types/pokemon";
+import { mapForPreview, mapToDetails } from "@/utils/mappers";
 import {
-  extractIdFromUrl,
-  buildDetailPageImageUrl,
-  buildPreviewImageUrl,
   parseNextOffset,
 } from "@/utils/helpers";
 
-const mapForPreview = (resource: NamedAPIResource): PokemonSummary => {
-  const id = extractIdFromUrl(resource.url);
-  return {
-    id,
-    name: resource.name,
-    imageUrl: buildPreviewImageUrl(id),
-  };
-};
+
 
 export const usePokemonList = (offset: number = 0, limit: number = 150) => {
   return useQuery({
@@ -57,3 +46,23 @@ export const usePokemonByName = (name: string) => {
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 };
+
+export const usePokemonDetails = (name: string) =>
+  useQuery({
+    queryKey: ["pokemon-details", name],
+    enabled: !!name,
+    staleTime: 10 * 60 * 1000,
+    queryFn: async () => {
+      const [pokemon, species] = await Promise.all([
+        PokeApiService.getPokemonByName(name),
+        PokeApiService.getSpeciesByName(name),
+      ]);
+
+      const evoId = Number(
+        species.evolution_chain?.url.split("/").filter(Boolean).pop()
+      );
+      const chain = await PokeApiService.getEvolutionChainById(evoId);
+
+      return mapToDetails(pokemon, species, chain);
+    },
+  });

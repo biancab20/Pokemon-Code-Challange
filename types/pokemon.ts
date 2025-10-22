@@ -51,7 +51,7 @@ export const TYPE_COLORS: Record<string, string> = {
   ice: "rgba(125, 224, 208, 1)",
   fighting: "rgba(206, 63, 106, 1)",
   poison: "rgba(171, 106, 200, 1)",
-  ground: "rgba(171, 106, 200, 1)",
+  ground: "rgba(216, 118, 69, 1)",
   flying: "rgba(147, 169, 226, 1)",
   psychic: "rgba(131, 12, 185, 1)",
   bug: "rgba(143, 191, 43, 1)",

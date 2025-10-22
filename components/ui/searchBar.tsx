@@ -1,21 +1,25 @@
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { StyleSheet, View, TextInput } from "react-native";
-
+import { Icon } from "../icons/Icon";
 
 export function SearchBar() {
-return (
+
+  return (
     <View style={style.wrapper}>
-        <MaterialCommunityIcons name="magnify" size={20} style={style.icon} />
-        <TextInput style={style.input} placeholderTextColor="#9AA0A6" placeholder="Search for Pokémon.." />
-      </View>
-);
+      <Icon name="search" />
+      <TextInput
+        style={style.input}
+        placeholderTextColor="#9AA0A6"
+        placeholder="Search for Pokémon.."
+      />
+    </View>
+  );
 }
 
 const style = StyleSheet.create({
   wrapper: {
     margin: 16,
     marginBottom: 32,
-    position: "relative",
+    flexDirection: "row",
     height: 48,
     borderRadius: 8,
     backgroundColor: "#FFF",
@@ -24,19 +28,14 @@ const style = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 3,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingHorizontal: 16,
+    alignItems: "center",
+    gap: 12,
   },
   input: {
     height: "100%",
-    paddingLeft: 40, // make room for the icon
-    paddingRight: 12,
     fontSize: 16,
     color: "#0E0940",
   },
-  icon: {
-    position: "absolute",
-    left: 12,
-    top: "50%",
-    transform: [{ translateY: -10 }],
-  }
 });
