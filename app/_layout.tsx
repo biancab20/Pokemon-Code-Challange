@@ -11,6 +11,7 @@ import { useTanStackQueryDevTools } from '@rozenite/tanstack-query-plugin';
 
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { CustomStackNav } from "@/components/ui/customStackNav";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -33,13 +34,18 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack
           screenOptions={{
-            headerStyle: {
-              backgroundColor: "#EDF6FF",
-            },
+            // headerStyle: {
+            //   backgroundColor: "transparent",
+            // },
+            // headerTintColor: "#000000",
+             headerShadowVisible: false,
+            //headerShown: true,
+           header: () => <CustomStackNav />
           }}
+
         >
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="pokemon/[name]" />
+          <Stack.Screen name="(tabs)" options={{ title: "", headerShown: false }} />
+          <Stack.Screen name="pokemon/[name]" options={{ title: "", headerShown: true }}/>
           {/* here you ca add the individual pokemon page */}
         </Stack>
         <StatusBar style="auto" />

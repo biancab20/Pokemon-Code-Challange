@@ -13,7 +13,8 @@ return (
 
 const style = StyleSheet.create({
   wrapper: {
-    margin: 12,
+    margin: 16,
+    marginBottom: 32,
     position: "relative",
     height: 48,
     borderRadius: 8,

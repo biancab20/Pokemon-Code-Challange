@@ -23,17 +23,14 @@ export default function TabLayout() {
           right: 16,
           bottom: 0,
           height: 68,
-          backgroundColor: "transparent",
+          backgroundColor: "rgba(237, 246, 255, 0.5)",
           borderTopWidth: 0,
-          elevation: 0,
-          shadowOpacity: 0,
         },
         headerShown: false,
-        tabBarButton: HapticTab,
         tabBarBackground: () => (
           <BlurView
             tint="light" // "light" | "dark" | "default"
-            intensity={30} // 0–100
+            intensity={50} // 0–100
             style={StyleSheet.absoluteFill}
             experimentalBlurMethod={
             Platform.OS === "android" ? "dimezisBlurView" : undefined
@@ -49,7 +46,7 @@ export default function TabLayout() {
         options={{
           title: "Pokémons",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="pokeball" size={24} color={color} />
+            <MaterialCommunityIcons name="pokeball" size={24} color={color}  />
           ),
         }}
       />
@@ -58,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: "Favorites",
           tabBarIcon: ({ color }) => (
-            <Feather name="heart" size={28} color={color} />
+            <Feather name="heart" size={24} color={color} />
           ),
         }}
       />

@@ -15,8 +15,8 @@ export function CardList({ data, onEndReached, isFetchingNextPage }: Props) {
       data={data}
       keyExtractor={(item) => String(item.id)}
       numColumns={2}
-      contentContainerStyle={{ gap: 12, paddingBottom: 88, paddingTop: 10}}
-      columnWrapperStyle={{ alignItems: "stretch", gap: 12 }}
+      contentContainerStyle={{ gap: 16, paddingBottom: 88, paddingTop: 5}}
+      columnWrapperStyle={{ alignItems: "stretch", gap: 16 }}
       showsVerticalScrollIndicator={false}
       onEndReachedThreshold={0.5}
       onEndReached={onEndReached}
@@ -39,6 +39,6 @@ export function CardList({ data, onEndReached, isFetchingNextPage }: Props) {
 const style = StyleSheet.create({
   list: {
     flex: 1,
-    paddingHorizontal:18,
+    paddingHorizontal:24,
   },
 });
