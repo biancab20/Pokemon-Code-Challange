@@ -7,9 +7,12 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { CustomStackNav } from "@/components/ui/customStackNav";
+import { useEffect } from "react";
+import { databaseService } from "@/services/database";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -26,6 +29,10 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  useTanStackQueryDevTools(queryClient);
+  useEffect(() => {
+    databaseService.initDatabase().catch(console.error);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

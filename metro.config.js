@@ -7,5 +7,5 @@ const config = getDefaultConfig(__dirname);
 
 module.exports = withRozenite(config, { 
     enabled: process.env.WITH_ROZENITE === 'true',
-    include: ['@rozenite/tanstack-query-plugin'],
+  //  include: ['@rozenite/tanstack-query-plugin'],
 });
