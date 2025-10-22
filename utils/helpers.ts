@@ -1,3 +1,6 @@
+import { TYPE_COLORS } from "@/types/pokemon";
+import { PokemonType } from "pokenode-ts";
+
 export const extractIdFromUrl = (url: string): number => {
   const match = url.match(/\/pokemon\/(\d+)\/?$/);
   if (!match) throw new Error(`Cannot extract id from ${url}`);
@@ -20,3 +23,8 @@ export const parseNextOffset = (nextUrl?: string | null): number | undefined => 
     return undefined;
   }
 };
+
+export function getTypeColor(type: PokemonType | string): string {
+  const name = typeof type === "string" ? type : type.type.name;
+  return TYPE_COLORS[name.toLowerCase()] ?? "#9AA0A6"; 
+}

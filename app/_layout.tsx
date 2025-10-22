@@ -7,8 +7,6 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useTanStackQueryDevTools } from '@rozenite/tanstack-query-plugin';
-
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { CustomStackNav } from "@/components/ui/customStackNav";
@@ -34,19 +32,18 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack
           screenOptions={{
-            // headerStyle: {
-            //   backgroundColor: "transparent",
-            // },
-            // headerTintColor: "#000000",
-             headerShadowVisible: false,
-            //headerShown: true,
-           header: () => <CustomStackNav />
+            headerShadowVisible: false,
+            header: () => <CustomStackNav />,
           }}
-
         >
-          <Stack.Screen name="(tabs)" options={{ title: "", headerShown: false }} />
-          <Stack.Screen name="pokemon/[name]" options={{ title: "", headerShown: true }}/>
-          {/* here you ca add the individual pokemon page */}
+          <Stack.Screen
+            name="(tabs)"
+            options={{ title: "", headerShown: false }}
+          />
+          <Stack.Screen
+            name="pokemon/[name]"
+            options={{ title: "", headerShown: true }}
+          />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

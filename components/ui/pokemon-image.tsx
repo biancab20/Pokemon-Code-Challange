@@ -1,6 +1,6 @@
-import { buildDetailPageImageUrl } from '@/utils/helpers';
-import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { buildDetailPageImageUrl } from "@/utils/helpers";
+import React from "react";
+import { Image, StyleSheet, View } from "react-native";
 
 interface PokemonImageProps {
   id: number;
@@ -9,7 +9,7 @@ interface PokemonImageProps {
 
 export function PokemonImage({ id, size = 200 }: PokemonImageProps) {
   const imageUrl = buildDetailPageImageUrl(id);
-  
+
   return (
     <View style={[styles.container, { width: size, height: size }]}>
       <Image
@@ -23,10 +23,10 @@ export function PokemonImage({ id, size = 200 }: PokemonImageProps) {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
 });
