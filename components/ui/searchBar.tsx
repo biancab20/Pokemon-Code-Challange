@@ -1,15 +1,28 @@
 import { StyleSheet, View, TextInput } from "react-native";
 import { Icon } from "../icons/Icon";
 
-export function SearchBar() {
+type Props = {
+  value: string;
+  onChangeText: (text: string) => void;
+};
+
+export default function SearchBar({
+  value,
+  onChangeText,
+}: Props) {
 
   return (
     <View style={style.wrapper}>
       <Icon name="search" />
       <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        autoCapitalize="none"
+        autoCorrect={false}
         style={style.input}
         placeholderTextColor="#9AA0A6"
         placeholder="Search for Pokémon.."
+        accessibilityLabel="Search Pokémon"
       />
     </View>
   );
@@ -34,6 +47,7 @@ const style = StyleSheet.create({
     gap: 12,
   },
   input: {
+    flex: 1,
     height: "100%",
     fontSize: 16,
     color: "#0E0940",

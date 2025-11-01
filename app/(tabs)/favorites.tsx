@@ -5,6 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Favorites() {
   const { data: favorites, isLoading, error } = useFavorites();
+  const isEmpty =
+    !isLoading && !error && (!favorites || favorites.length === 0);
 
   if (isLoading) {
     return (
@@ -20,7 +22,23 @@ export default function Favorites() {
     );
   }
 
-  if (error || !favorites || favorites.length === 0) {
+  if (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    return (
+      <SafeAreaView style={style.container}>
+        <View style={style.header}>
+          <Text style={style.title}>My Favorites</Text>
+        </View>
+        <View style={style.emptyContainer}>
+          <Text style={style.emptyText}>Something went wrong</Text>
+          <Text style={style.emptySubtext}>{message}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (isEmpty) {
     return (
       <SafeAreaView style={style.container}>
         <View style={style.header}>
@@ -35,6 +53,7 @@ export default function Favorites() {
       </SafeAreaView>
     );
   }
+
   return (
     <SafeAreaView style={style.view} edges={["top", "left", "right"]}>
       <Text style={style.title}>My favorites</Text>

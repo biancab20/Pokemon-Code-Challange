@@ -1,9 +1,9 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { CardList } from "@/components/ui/cardList";
-import { SearchBar } from "@/components/ui/searchBar";
 import { useInfinitePokemonList } from "@/hooks/use-pokemon";
-import { usePokemonSearch } from "@/hooks/use-pokemon-search";
+import { useEffect, useMemo, useState } from "react";
+import SearchBar from "@/components/ui/searchBar";
 
 export default function Pokemons() {
   const {
@@ -15,10 +15,40 @@ export default function Pokemons() {
     isFetchingNextPage,
   } = useInfinitePokemonList(50);
 
+const items = useMemo(() => {
   const pages = data?.pages ?? [];
-  const items = pages.flatMap((p) => p.results);
+  return pages.flatMap((p) => p.results);
+}, [data?.pages]);
 
- // const { query, setQuery, filtered, isSearching } = usePokemonSearch(items);
+  // search state + light debounce for smooth typing
+  const [queryRaw, setQueryRaw] = useState("");
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    const id = setTimeout(() => setQuery(queryRaw), 120);
+    return () => clearTimeout(id);
+  }, [queryRaw]);
+
+  const isSearching = query.trim().length > 0;
+
+  const filteredItems = useMemo(() => {
+    if (!isSearching) return items;
+
+    const q = query.trim().toLowerCase();
+    const prefix: typeof items = [];
+    const contains: typeof items = [];
+
+    for (const p of items) {
+      const name = p.name.toLowerCase();
+      if (name.startsWith(q)) {
+        prefix.push(p);
+      } else if (name.includes(q)) {
+        contains.push(p);
+      }
+    }
+
+    // prefix matches first, then other substring matches
+    return [...prefix, ...contains];
+  }, [items, isSearching, query]);
 
   if (isLoading) {
     return (
@@ -38,23 +68,30 @@ export default function Pokemons() {
     );
   }
 
-  //const listData = isSearching ? filtered : items;
+  const listData = filteredItems;
 
   return (
     <SafeAreaView style={style.view} edges={["top", "left", "right"]}>
-      <SearchBar 
-     // value={query}
-     // onChangeText={setQuery}
-     ></SearchBar>
-      <Text style={style.title}>All Pokémon</Text>
+      <SearchBar value={queryRaw} onChangeText={setQueryRaw} />
+      {!isSearching ? <Text style={style.title}>All Pokémon</Text> : <></>}
 
-      <CardList
-        data={items}
-        isFetchingNextPage={isFetchingNextPage}
-        onEndReached={() => {
-          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-        }}
-      ></CardList>
+      {isSearching && listData.length === 0 ? (
+        <View style={style.centerContainer}>
+          <Text>No Pokémon found.</Text>
+        </View>
+      ) : (
+        <CardList
+          data={listData}
+          isFetchingNextPage={!isSearching && isFetchingNextPage}
+          onEndReached={
+            isSearching
+              ? undefined // don’t load more pages while filtering
+              : () => {
+                  if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+                }
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }

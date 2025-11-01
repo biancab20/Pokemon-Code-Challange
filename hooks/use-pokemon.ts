@@ -38,14 +38,14 @@ export function useInfinitePokemonList(limit: number=50) {
   });
 }
 
-export const usePokemonByName = (name: string) => {
-  return useQuery({
-    queryKey: ['pokemon', name],
-    queryFn: () => PokeApiService.getPokemonByName(name),
-    enabled: !!name, // Only run query if name is provided
-    staleTime: 10 * 60 * 1000, // 10 minutes
-  });
-};
+// export const usePokemonByName = (name: string) => {
+//   return useQuery({
+//     queryKey: ['pokemon', name],
+//     queryFn: () => PokeApiService.getPokemonByName(name),
+//     enabled: !!name, // Only run query if name is provided
+//     staleTime: 10 * 60 * 1000, // 10 minutes
+//   });
+// };
 
 export const usePokemonDetails = (name: string) =>
   useQuery({
