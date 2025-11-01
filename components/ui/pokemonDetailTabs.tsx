@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  ImageBackground,
+} from "react-native";
 import {
   TabView,
   SceneMap,
@@ -7,12 +13,14 @@ import {
   SceneRendererProps,
   NavigationState,
 } from "react-native-tab-view";
-import type { PokemonAbout } from "@/types/pokemon";
+import type { EvolutionNode, PokemonAbout } from "@/types/pokemon";
 import type { PokemonStat } from "pokenode-ts";
+import { buildDetailPageImageUrl } from "@/utils/helpers";
+import { Icon } from "../icons/Icon";
 
 type Props = {
   about: PokemonAbout;
-  evolutionNames: string[]; // we'll fill this later
+  evolution: EvolutionNode[];
 };
 
 const MAX_STAT = 255; // Pokémon base stat theoretical max
@@ -59,7 +67,33 @@ function StatBar({
   );
 }
 
-export default function PokemonDetailTabs({ about, evolutionNames }: Props) {
+function EvolutionCard({ id, name }: { id: number; name: string }) {
+  return (
+    <View style={style.shadowWrapper}>
+      <View style={style.evoCard}>
+        <ImageBackground
+          source={{ uri: buildDetailPageImageUrl(id) }}
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(246, 246, 255, 1)",
+            maxWidth: 80,
+          }}
+          resizeMode="cover"
+        ></ImageBackground>
+        <View style={style.evoInfoContainer}>
+          <View style={style.evoTagContainer}>
+            <Text style={style.evoId}>{String(id).padStart(3, "0")}</Text>
+          </View>
+          <Text style={style.evoName}>
+            {name.charAt(0).toUpperCase() + name.slice(1)}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+export default function PokemonDetailTabs({ about, evolution }: Props) {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState<Route[]>([
@@ -87,10 +121,15 @@ export default function PokemonDetailTabs({ about, evolutionNames }: Props) {
       />
       <KVRow
         label="Abilities"
-        value={join(about.abilities, (a) => {
-          const name = a.ability.name;
-          return name.charAt(0).toUpperCase() + name.slice(1);
-        })}
+        value={join(
+          about.abilities
+            .filter((a) => !a.is_hidden) // only non-hidden
+            .map((a) => {
+              const name = a.ability.name;
+              return name.charAt(0).toUpperCase() + name.slice(1);
+            }),
+          (x) => x
+        )}
       />
     </View>
   );
@@ -100,7 +139,10 @@ export default function PokemonDetailTabs({ about, evolutionNames }: Props) {
       <StatBar label="HP" value={getStat(about.stats, "hp")} />
       <StatBar label="Attack" value={getStat(about.stats, "attack")} />
       <StatBar label="Defense" value={getStat(about.stats, "defense")} />
-      <StatBar label="Special Attack" value={getStat(about.stats, "special-attack")} />
+      <StatBar
+        label="Special Attack"
+        value={getStat(about.stats, "special-attack")}
+      />
       <StatBar
         label="Special Defense"
         value={getStat(about.stats, "special-defense")}
@@ -111,11 +153,22 @@ export default function PokemonDetailTabs({ about, evolutionNames }: Props) {
 
   const EvolutionRoute = () => (
     <View style={style.scene}>
-      <Text style={style.evoText}>
-        {evolutionNames.length
-          ? evolutionNames.join(" → ")
-          : "No evolution data"}
-      </Text>
+      {evolution.length ? (
+        <View style={style.evoList}>
+          {evolution.map((evo, index) => (
+            <React.Fragment key={evo.id}>
+              <EvolutionCard id={evo.id} name={evo.name} />
+              {index < evolution.length - 1 && (
+                <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
+                  <Icon name="evolution" color="rgba(14, 9, 64, 1)" size={18} />
+                </View>
+              )}
+            </React.Fragment>
+          ))}
+        </View>
+      ) : (
+        <Text style={style.evoText}>No evolution data</Text>
+      )}
     </View>
   );
 
@@ -170,7 +223,7 @@ export default function PokemonDetailTabs({ about, evolutionNames }: Props) {
 
 const style = StyleSheet.create({
   tabView: {
-    marginHorizontal: 24,
+    paddingHorizontal: 24,
     backgroundColor: "white",
   },
   tabBar: {
@@ -183,7 +236,7 @@ const style = StyleSheet.create({
   scene: {
     backgroundColor: "#fff",
     marginTop: 24,
-    marginBottom:10,
+    marginBottom: 10,
   },
   tabLabel: {
     width: "100%",
@@ -224,8 +277,8 @@ const style = StyleSheet.create({
   },
   statValue: {
     color: "#0E0940",
-    fontWeight: "700",
-    opacity: 0.8,
+    fontWeight: "400",
+    opacity: 0.65,
   },
   barBg: {
     height: 4,
@@ -241,5 +294,56 @@ const style = StyleSheet.create({
   evoText: {
     color: "#0E0940",
     fontWeight: "600",
+  },
+  evoCard: {
+    flexDirection: "row",
+    height: 80,
+    borderRadius: 8,
+    width: "100%",
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
+  },
+  evoName: {
+    marginTop: 8,
+    color: "#0E0940",
+    fontWeight: "700",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  evoId: {
+    fontWeight: "500",
+    fontSize: 10,
+    textTransform: "uppercase",
+    color: "#FFFFFF",
+  },
+  evoTagContainer: {
+    backgroundColor: "#5631E8",
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  evoInfoContainer: {
+    flexDirection: "column",
+    flex: 3,
+    paddingVertical: 17.5,
+    paddingLeft: 12,
+    alignItems: "flex-start",
+  },
+  evoList: {
+    flexDirection: "column",
+  },
+  shadowWrapper: {
+    shadowColor: "rgba(48, 55, 115, 1)",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 15,
+    marginBottom: 10, // space so shadow is visible
+    marginRight: 12,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    // Android shadow
+    elevation: 5,
+    flexDirection: "row",
+    //borderRadius: 8,
   },
 });

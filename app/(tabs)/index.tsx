@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { CardList } from "@/components/ui/cardList";
 import { SearchBar } from "@/components/ui/searchBar";
 import { useInfinitePokemonList } from "@/hooks/use-pokemon";
+import { usePokemonSearch } from "@/hooks/use-pokemon-search";
 
 export default function Pokemons() {
   const {
@@ -13,10 +14,11 @@ export default function Pokemons() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfinitePokemonList(50);
-  
+
   const pages = data?.pages ?? [];
   const items = pages.flatMap((p) => p.results);
-  //const total = pages[0]?.count ?? 0;
+
+ // const { query, setQuery, filtered, isSearching } = usePokemonSearch(items);
 
   if (isLoading) {
     return (
@@ -36,12 +38,23 @@ export default function Pokemons() {
     );
   }
 
+  //const listData = isSearching ? filtered : items;
+
   return (
     <SafeAreaView style={style.view} edges={["top", "left", "right"]}>
-      <SearchBar></SearchBar>
+      <SearchBar 
+     // value={query}
+     // onChangeText={setQuery}
+     ></SearchBar>
       <Text style={style.title}>All Pokémon</Text>
 
-      <CardList data={items} isFetchingNextPage={isFetchingNextPage} onEndReached={() => { if (hasNextPage && !isFetchingNextPage) fetchNextPage();}}></CardList>
+      <CardList
+        data={items}
+        isFetchingNextPage={isFetchingNextPage}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+        }}
+      ></CardList>
     </SafeAreaView>
   );
 }
@@ -54,7 +67,7 @@ const style = StyleSheet.create({
   title: {
     fontWeight: "bold",
     marginHorizontal: 24,
-    marginBottom:11,
+    marginBottom: 11,
     fontSize: 24,
   },
   centerContainer: {

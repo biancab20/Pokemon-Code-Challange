@@ -40,6 +40,7 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             headerShadowVisible: false,
+            headerShown: false,
           }}
         >
           <Stack.Screen

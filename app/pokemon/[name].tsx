@@ -82,40 +82,12 @@ export default function PokemonDetailScreen() {
         </View>
 
         <View style={{height: 400, paddingTop: 24, backgroundColor: "white"}}>
-          {/* Remove the old sections and drop this: */}
           <PokemonDetailTabs
             about={about}
-            evolutionNames={evolution.map((n) => n.name)}
+            evolution={evolution}
           />
         </View>
-
-        {/* <View style={styles.detailsContainer}>
-          <Text style={styles.sectionTitle}>About</Text>
-          <Text>Height: {(about.height / 10).toFixed(1)} m</Text>
-          <Text>Weight: {(about.weight / 10).toFixed(1)} kg</Text>
-
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-            Abilities
-          </Text>
-          <Text>{about.abilities.map((a) => a.ability.name).join(", ")}</Text>
-
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-            Base Stats
-          </Text>
-          {about.stats.map((s) => (
-            <Text key={s.stat.name}>
-              {s.stat.name}: {s.base_stat}
-            </Text>
-          ))}
-
-          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-            Evolution
-          </Text>
-          <Text>
-            {evolution.map((n, i) => (i === 0 ? n.name : ` → ${n.name}`))}
-          </Text>
-        </View> */}
-        <View style={{ height: 268 }} />
+        <View style={{ height: 218 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -125,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF",
-    
   },
   scrollView: {
     flex: 1,
