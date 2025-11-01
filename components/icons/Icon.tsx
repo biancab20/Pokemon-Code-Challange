@@ -10,8 +10,6 @@ type IconProps = {
 
 function applyColor(xml: string, color?: string) {
   if (!color) return xml;
-  // Replace all explicit fills with the provided color
-  // (keeps "none" as none)
   return xml.replace(/fill="(?!none)[^"]*"/g, `fill="${color}"`);
 }
 

@@ -19,6 +19,15 @@ pokeballFilled: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xml
 evolution: `<svg width="2" height="14" viewBox="0 0 2 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 0V14" stroke="#0E0940" stroke-width="2" stroke-dasharray="4 4"/>
 </svg>`,
+more: `<svg width="3" height="15" viewBox="0 0 3 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3 1.5C3 2.32843 2.32843 3 1.5 3C0.671573 3 0 2.32843 0 1.5C0 0.671573 0.671573 0 1.5 0C2.32843 0 3 0.671573 3 1.5ZM3 7.5C3 8.32843 2.32843 9 1.5 9C0.671573 9 0 8.32843 0 7.5C0 6.67157 0.671573 6 1.5 6C2.32843 6 3 6.67157 3 7.5ZM1.5 15C2.32843 15 3 14.3284 3 13.5C3 12.6716 2.32843 12 1.5 12C0.671573 12 0 12.6716 0 13.5C0 14.3284 0.671573 15 1.5 15Z" fill="#0E0940"/>
+</svg>`,
+maximize: `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 18V10H2V14.6L14.6 2H10V0H18V8H16V3.4L3.4 16H8V18H0Z" fill="black"/>
+</svg>`,
+share: `<svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 22C1.45 22 0.979333 21.8043 0.588 21.413C0.196 21.021 0 20.55 0 20V9C0 8.45 0.196 7.979 0.588 7.587C0.979333 7.19567 1.45 7 2 7H5V9H2V20H14V9H11V7H14C14.55 7 15.021 7.19567 15.413 7.587C15.8043 7.979 16 8.45 16 9V20C16 20.55 15.8043 21.021 15.413 21.413C15.021 21.8043 14.55 22 14 22H2ZM7 15V3.825L5.4 5.425L4 4L8 0L12 4L10.6 5.425L9 3.825V15H7Z" fill="black"/>
+</svg>`
 };
 
 export type IconName = keyof typeof ICONS;

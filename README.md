@@ -30,7 +30,7 @@ In the output, you'll find options to open the app in a
 - [x] Working Expo Go project, should be able to scan the QR code and see the app running on any device.
 - [x] PokeAPI is used to fetch Pokémon data https://pokeapi.co/
   - [x] List of Pokémon is loaded from the API.
-  - [ ] Pokémon details (metadata, stats, evolution chain) are loaded from the API.
+  - [x] Pokémon details (metadata, stats, evolution chain) are loaded from the API.
 - [x] List of Pokémon is displayed in a FlatList.
   - [x] Must be able to filter the list by name using the search bar.
 - [x] Pokémon details are displayed in a ScrollView.
@@ -43,20 +43,20 @@ In the output, you'll find options to open the app in a
   - [x] Must be able to unfavorite the Pokémon.
   - [x] Empty state must be displayed when there are no favorites.
 - [ ] Pokémon actions must include:
-    - [ ] Favorite.
+    - [x] Favorite.
     - [ ] Share.
-    - [ ] Open in detail view.
-- [ ] All async operations must include an loading and error state.
+    - [x] Open in detail view.
+- [x] All async operations must include an loading and error state.
     - [x] Fetching Pokémon list.
     - [x] Fetching Pokémon details.
-    - [ ] Fetching Pokémon evolution chain.
+    - [x] Fetching Pokémon evolution chain.
 
 #### Project setup
 - [x] Tanstack Query for API calls.
 - [x] Expo Router for navigation.
 - [x] SQLite for local storage.
-- [ ] Uses Typescript with no TS errors.
-- [ ] Uses ESLint with no ESLint errors. (ideally use [React Compiler Linter](https://docs.expo.dev/guides/react-compiler/#enabling-the-linter))
+- [x] Uses Typescript with no TS errors.
+- [x] Uses ESLint with no ESLint errors. (ideally use [React Compiler Linter](https://docs.expo.dev/guides/react-compiler/#enabling-the-linter))
 - [x] Uses Separation of Concerns (determine a project structure that follows this principle).
 - [ ] Expo Font is used to implement [the font](./assets/fonts.zip).
 
@@ -69,6 +69,6 @@ Each optional item is worth 1 extra point.
 - [x] Pokémon list is paginated and infinite scroll is used.
 - [ ] Clean Typescript: no use of `any`, typecasting `as SomeType`, or TS ignore comments.
 - [x] Pixel Perfect Design on either iOS or Android. (iOS)
-- [ ] No bugs, console errors and use of console.log.
+- [x] No bugs, console errors and use of console.log.
 - [ ] Added [localizations](https://docs.expo.dev/guides/localization/) for the app.
 - [ ] Adds Pokémon Battle Feature.
