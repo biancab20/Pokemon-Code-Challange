@@ -160,7 +160,7 @@ export default function PokemonDetailTabs({ about, evolution }: Props) {
               <EvolutionCard id={evo.id} name={evo.name} />
               {index < evolution.length - 1 && (
                 <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
-                  <Icon name="evolution" color="rgba(14, 9, 64, 1)" size={18} />
+                  <Icon name="evolution" color="#B7B5C6" size={18} />
                 </View>
               )}
             </React.Fragment>
@@ -181,32 +181,34 @@ export default function PokemonDetailTabs({ about, evolution }: Props) {
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: NavigationState<Route> }
   ) => (
-    <TabBar
-      {...props}
-      scrollEnabled={false}
-      style={style.tabBar}
-      activeColor="rgba(14, 9, 64, 1)"
-      tabStyle={{
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      options={{
-        about: {
-          labelText: "About",
-          labelStyle: style.tabLabel,
-        },
-        stats: {
-          labelText: "Stats",
-          labelStyle: style.tabLabel,
-        },
-        evolution: {
-          labelText: "Evolution",
-          labelStyle: style.tabLabel,
-        },
-      }}
-      indicatorStyle={{ backgroundColor: "#5631E8", height: 2 }}
-      indicatorContainerStyle={{ marginBottom: -2 }}
-    />
+    <View style={style.tabBarContainer}>
+      <TabBar
+        {...props}
+        scrollEnabled={false}
+        style={style.tabBar}
+        activeColor="rgba(14, 9, 64, 1)"
+        tabStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        options={{
+          about: {
+            labelText: "About",
+            labelStyle: style.tabLabel,
+          },
+          stats: {
+            labelText: "Stats",
+            labelStyle: style.tabLabel,
+          },
+          evolution: {
+            labelText: "Evolution",
+            labelStyle: style.tabLabel,
+          },
+        }}
+        indicatorStyle={{ backgroundColor: "#5631E8", height: 2 }}
+        indicatorContainerStyle={{ marginBottom: -2 }}
+      />
+    </View>
   );
 
   return (
@@ -223,7 +225,6 @@ export default function PokemonDetailTabs({ about, evolution }: Props) {
 
 const style = StyleSheet.create({
   tabView: {
-    paddingHorizontal: 24,
     backgroundColor: "white",
   },
   tabBar: {
@@ -233,7 +234,12 @@ const style = StyleSheet.create({
     borderBottomColor: "rgba(219, 218, 230, 1)",
     shadowOpacity: 0,
   },
+  tabBarContainer: {
+  paddingHorizontal: 24,
+},
   scene: {
+      paddingHorizontal: 24,
+
     backgroundColor: "#fff",
     marginTop: 24,
     marginBottom: 10,

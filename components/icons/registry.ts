@@ -17,7 +17,7 @@ pokeballFilled: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xml
 <path d="M9.95062 12C11.0552 12 11.9506 11.1046 11.9506 10C11.9506 8.89543 11.0552 8 9.95062 8C8.84605 8 7.95062 8.89543 7.95062 10C7.95062 11.1046 8.84605 12 9.95062 12Z" fill="#FF4F68"/>
 </svg>`,
 evolution: `<svg width="2" height="14" viewBox="0 0 2 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 0V14" stroke="#0E0940" stroke-width="2" stroke-dasharray="4 4"/>
+<path d="M1 0V14" stroke="#B7B5C6" stroke-width="2" stroke-dasharray="4 4"/>
 </svg>`,
 more: `<svg width="3" height="15" viewBox="0 0 3 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M3 1.5C3 2.32843 2.32843 3 1.5 3C0.671573 3 0 2.32843 0 1.5C0 0.671573 0.671573 0 1.5 0C2.32843 0 3 0.671573 3 1.5ZM3 7.5C3 8.32843 2.32843 9 1.5 9C0.671573 9 0 8.32843 0 7.5C0 6.67157 0.671573 6 1.5 6C2.32843 6 3 6.67157 3 7.5ZM1.5 15C2.32843 15 3 14.3284 3 13.5C3 12.6716 2.32843 12 1.5 12C0.671573 12 0 12.6716 0 13.5C0 14.3284 0.671573 15 1.5 15Z" fill="#0E0940"/>
