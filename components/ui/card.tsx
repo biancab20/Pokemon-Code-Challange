@@ -54,10 +54,9 @@ export function Card({ pokemon }: PokemonCardProps) {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `Check out ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}! #${String(pokemon.id).padStart(
-          3,
-          "0"
-        )}`,
+        message: `Check out ${
+          pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+        }! #${String(pokemon.id).padStart(3, "0")}`,
         url: pokemon.imageUrl, // iOS uses this; Android uses message content
         title: `Pokémon • ${pokemon.name}`,
       });
@@ -78,7 +77,7 @@ export function Card({ pokemon }: PokemonCardProps) {
     {
       label: "Share",
       icon: <Icon name="share" size={20} color="#006DF8" />,
-      onPress: handleShare
+      onPress: handleShare,
     },
   ];
 
@@ -172,8 +171,8 @@ const style = StyleSheet.create({
     paddingHorizontal: 12,
   },
   text: {
-    textAlign: "left",
     fontWeight: 500,
+    fontFamily: "font-medium",
     color: "#0E0940",
     textTransform: "capitalize",
   },
