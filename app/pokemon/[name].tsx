@@ -81,7 +81,7 @@ export default function PokemonDetailScreen() {
           <PokemonImage id={about.id} size={200} />
         </View>
 
-        <View style={{height: 400, paddingTop: 24, backgroundColor: "white"}}>
+        <View style={{height: 450, paddingTop: 24, backgroundColor: "white"}}>
           <PokemonDetailTabs
             about={about}
             evolution={evolution}
