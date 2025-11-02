@@ -64,10 +64,10 @@ In the output, you'll find options to open the app in a
 ### Optional items
 Each optional item is worth 1 extra point.
 
-- [ ] Use of animations (e.g. loading in UI elements).
+- [x] Use of animations (loading evolution UI skeleton + custom Modal).
 - [ ] Dark mode support (making use of theming).
 - [x] Pokémon list is paginated and infinite scroll is used.
-- [ ] Clean Typescript: no use of `any`, typecasting `as SomeType`, or TS ignore comments.
+- [x] Clean Typescript: no use of `any`, typecasting `as SomeType`, or TS ignore comments.
 - [x] Pixel Perfect Design on either iOS or Android. (iOS)
 - [x] No bugs, console errors and use of console.log.
 - [ ] Added [localizations](https://docs.expo.dev/guides/localization/) for the app.

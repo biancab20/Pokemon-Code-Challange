@@ -5,6 +5,9 @@ import {
   StyleSheet,
   useWindowDimensions,
   ImageBackground,
+  ViewStyle,
+  Animated,
+  Easing,
 } from "react-native";
 import {
   TabView,
@@ -17,6 +20,7 @@ import type { EvolutionNode, PokemonAbout } from "@/types/pokemon";
 import type { PokemonStat } from "pokenode-ts";
 import { buildDetailPageImageUrl } from "@/utils/helpers";
 import { Icon } from "../icons/Icon";
+import { useEffect, useRef } from "react";
 
 type Props = {
   about: PokemonAbout;
@@ -68,24 +72,51 @@ function StatBar({
     </View>
   );
 }
-function Line({
-  w = 180,
-  h = 12,
-  r = 6,
-}: {
-  w?: number;
-  h?: number;
+
+type Percent = `${number}%`;
+type LineProps = {
+  w?: number | Percent | "auto";
+  h?: number | Percent;
   r?: number;
-}) {
+  style?: ViewStyle;
+};
+
+export function AnimatedLine({ w = "100%", h = 14, r = 6, style }: LineProps) {
+  const t = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(t, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: false, // backgroundColor can't use native driver
+        }),
+        Animated.timing(t, {
+          toValue: 0,
+          duration: 900,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: false,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [t]);
+
+  const bg = t.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["#EDECF3", "#F5F4FA"], // subtle pulse
+  });
+
   return (
-    <View style={{
-        width: w,
-        height: h,
-        borderRadius: r,
-        backgroundColor: "#EDECF3",
-        marginBottom: 10,
-      }}></View>
-    
+    <Animated.View
+      style={[
+        { width: w, height: h, borderRadius: r, backgroundColor: bg },
+        style,
+      ]}
+    />
   );
 }
 
@@ -95,16 +126,17 @@ function EvolutionSkeleton() {
       {[...Array(3)].map((_, i) => (
         <View key={i} style={style.shadowWrapper}>
           <View style={style.evoCard}>
-            <View
-              style={{ flex: 1, maxWidth: 80, backgroundColor: "#F3F3F7" }}
-            />
+            {/* thumbnail placeholder */}
+            <AnimatedLine w={80} h={"100%"} r={0} style={{ maxWidth: 80, flex: 1 }} />
+
             <View style={style.evoInfoContainer}>
-              <View
-                style={[style.evoTagContainer, { backgroundColor: "#E0DFF0" }]}
-              >
-                <Line w={24} h={10} r={4} />
+              {/* small ID tag */}
+              <View style={[style.evoTagContainer, { backgroundColor: "transparent", paddingHorizontal: 0, paddingVertical: 0 }]}>
+                <AnimatedLine w={24} h={10} r={4} />
               </View>
-              <Line w={120} h={14} />
+
+              {/* name line */}
+              <AnimatedLine w={120} h={14} r={6} style={{ marginTop: 8 }} />
             </View>
           </View>
         </View>
@@ -145,7 +177,6 @@ export default function PokemonDetailTabs({
   evolutionLoading,
   evolutionError,
 }: Props) {
-
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState<Route[]>([
@@ -153,7 +184,6 @@ export default function PokemonDetailTabs({
     { key: "stats", title: "Stats" },
     { key: "evolution", title: "Evolution" },
   ]);
-
 
   const AboutRoute = () => (
     <View style={style.scene}>
@@ -204,30 +234,30 @@ export default function PokemonDetailTabs({
     </View>
   );
 
-    const EvolutionRoute = () => (
-  <View style={style.scene}>
-    {evolutionLoading ? (
-      <EvolutionSkeleton />
-    ) : evolutionError ? (
-      <Text style={style.evoText}>Failed to load evolution data.</Text>
-    ) : evolution.length ? (
-      <View style={style.evoList}>
-        {evolution.map((evo, index) => (
-          <React.Fragment key={evo.id}>
-            <EvolutionCard id={evo.id} name={evo.name} />
-            {index < evolution.length - 1 && (
-              <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
-                <Icon name="evolution" color="#B7B5C6" size={18} />
-              </View>
-            )}
-          </React.Fragment>
-        ))}
-      </View>
-    ) : (
-      <Text style={style.evoText}>No evolution data</Text>
-    )}
-  </View>
-);
+  const EvolutionRoute = () => (
+    <View style={style.scene}>
+      {evolutionLoading ? (
+        <EvolutionSkeleton />
+      ) : evolutionError ? (
+        <Text style={style.evoText}>Failed to load evolution data.</Text>
+      ) : evolution.length ? (
+        <View style={style.evoList}>
+          {evolution.map((evo, index) => (
+            <React.Fragment key={evo.id}>
+              <EvolutionCard id={evo.id} name={evo.name} />
+              {index < evolution.length - 1 && (
+                <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
+                  <Icon name="evolution" color="#B7B5C6" size={18} />
+                </View>
+              )}
+            </React.Fragment>
+          ))}
+        </View>
+      ) : (
+        <Text style={style.evoText}>No evolution data</Text>
+      )}
+    </View>
+  );
 
   const renderScene = SceneMap({
     about: AboutRoute,

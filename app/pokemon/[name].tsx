@@ -31,7 +31,6 @@ export default function PokemonDetailScreen() {
   } = usePokemonEvolution(name);
 
   if (!name) return null;
-  // global guard for about (page header depends on about)
   if (aboutLoading) {
     return (
       <SafeAreaView style={styles.container}>
