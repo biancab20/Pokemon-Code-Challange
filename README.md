@@ -42,9 +42,9 @@ In the output, you'll find options to open the app in a
   - [x] Must be able to navigate to the Pokémon details page from the favorites list.
   - [x] Must be able to unfavorite the Pokémon.
   - [x] Empty state must be displayed when there are no favorites.
-- [ ] Pokémon actions must include:
+- [x] Pokémon actions must include:
     - [x] Favorite.
-    - [ ] Share.
+    - [x] Share.
     - [x] Open in detail view.
 - [x] All async operations must include an loading and error state.
     - [x] Fetching Pokémon list.

@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { PokeApiService } from "@/services/pokemon-api";
-import { mapForPreview, mapToDetails } from "@/utils/mappers";
+import { mapEvolution, mapForPreview, mapToAbout, mapToDetails } from "@/utils/mappers";
 import {
   parseNextOffset,
 } from "@/utils/helpers";
@@ -55,5 +55,31 @@ export const usePokemonDetails = (name: string) =>
       const chain = await PokeApiService.getEvolutionChainById(evoId);
 
       return mapToDetails(pokemon, species, chain);
+    },
+  });
+
+  export const usePokemonAbout = (name: string) =>
+  useQuery({
+    queryKey: ["pokemon-about", name],
+    enabled: !!name,
+    staleTime: 10 * 60 * 1000,
+    queryFn: async () => {
+      const pokemon = await PokeApiService.getPokemonByName(name);
+      return mapToAbout(pokemon);
+    },
+  });
+
+  export const usePokemonEvolution = (name: string, enabled = true) =>
+  useQuery({
+    queryKey: ["pokemon-evolution", name],
+    enabled: !!name,       
+    staleTime: 10 * 60 * 1000,
+    queryFn: async () => {
+      const species = await PokeApiService.getSpeciesByName(name);
+      const evoId = Number(
+        species.evolution_chain?.url.split("/").filter(Boolean).pop()
+      );
+      const chain = await PokeApiService.getEvolutionChainById(evoId);
+      return mapEvolution(chain);
     },
   });

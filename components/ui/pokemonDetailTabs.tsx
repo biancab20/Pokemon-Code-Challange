@@ -21,6 +21,8 @@ import { Icon } from "../icons/Icon";
 type Props = {
   about: PokemonAbout;
   evolution: EvolutionNode[];
+  evolutionLoading?: boolean;
+  evolutionError?: boolean;
 };
 
 const MAX_STAT = 255; // Pokémon base stat theoretical max
@@ -66,6 +68,50 @@ function StatBar({
     </View>
   );
 }
+function Line({
+  w = 180,
+  h = 12,
+  r = 6,
+}: {
+  w?: number;
+  h?: number;
+  r?: number;
+}) {
+  return (
+    <View style={{
+        width: w,
+        height: h,
+        borderRadius: r,
+        backgroundColor: "#EDECF3",
+        marginBottom: 10,
+      }}></View>
+    
+  );
+}
+
+function EvolutionSkeleton() {
+  return (
+    <View style={style.scene}>
+      {[...Array(3)].map((_, i) => (
+        <View key={i} style={style.shadowWrapper}>
+          <View style={style.evoCard}>
+            <View
+              style={{ flex: 1, maxWidth: 80, backgroundColor: "#F3F3F7" }}
+            />
+            <View style={style.evoInfoContainer}>
+              <View
+                style={[style.evoTagContainer, { backgroundColor: "#E0DFF0" }]}
+              >
+                <Line w={24} h={10} r={4} />
+              </View>
+              <Line w={120} h={14} />
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
 
 function EvolutionCard({ id, name }: { id: number; name: string }) {
   return (
@@ -93,7 +139,13 @@ function EvolutionCard({ id, name }: { id: number; name: string }) {
   );
 }
 
-export default function PokemonDetailTabs({ about, evolution }: Props) {
+export default function PokemonDetailTabs({
+  about,
+  evolution,
+  evolutionLoading,
+  evolutionError,
+}: Props) {
+
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState<Route[]>([
@@ -101,6 +153,7 @@ export default function PokemonDetailTabs({ about, evolution }: Props) {
     { key: "stats", title: "Stats" },
     { key: "evolution", title: "Evolution" },
   ]);
+
 
   const AboutRoute = () => (
     <View style={style.scene}>
@@ -151,26 +204,30 @@ export default function PokemonDetailTabs({ about, evolution }: Props) {
     </View>
   );
 
-  const EvolutionRoute = () => (
-    <View style={style.scene}>
-      {evolution.length ? (
-        <View style={style.evoList}>
-          {evolution.map((evo, index) => (
-            <React.Fragment key={evo.id}>
-              <EvolutionCard id={evo.id} name={evo.name} />
-              {index < evolution.length - 1 && (
-                <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
-                  <Icon name="evolution" color="#B7B5C6" size={18} />
-                </View>
-              )}
-            </React.Fragment>
-          ))}
-        </View>
-      ) : (
-        <Text style={style.evoText}>No evolution data</Text>
-      )}
-    </View>
-  );
+    const EvolutionRoute = () => (
+  <View style={style.scene}>
+    {evolutionLoading ? (
+      <EvolutionSkeleton />
+    ) : evolutionError ? (
+      <Text style={style.evoText}>Failed to load evolution data.</Text>
+    ) : evolution.length ? (
+      <View style={style.evoList}>
+        {evolution.map((evo, index) => (
+          <React.Fragment key={evo.id}>
+            <EvolutionCard id={evo.id} name={evo.name} />
+            {index < evolution.length - 1 && (
+              <View style={{ paddingHorizontal: 28, paddingBottom: 10 }}>
+                <Icon name="evolution" color="#B7B5C6" size={18} />
+              </View>
+            )}
+          </React.Fragment>
+        ))}
+      </View>
+    ) : (
+      <Text style={style.evoText}>No evolution data</Text>
+    )}
+  </View>
+);
 
   const renderScene = SceneMap({
     about: AboutRoute,
@@ -235,10 +292,10 @@ const style = StyleSheet.create({
     shadowOpacity: 0,
   },
   tabBarContainer: {
-  paddingHorizontal: 24,
-},
+    paddingHorizontal: 24,
+  },
   scene: {
-      paddingHorizontal: 24,
+    paddingHorizontal: 24,
 
     backgroundColor: "#fff",
     marginTop: 24,

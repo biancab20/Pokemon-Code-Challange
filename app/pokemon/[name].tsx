@@ -1,8 +1,9 @@
 import { PokemonImage } from "@/components/ui/pokemon-image";
 import PokemonDetailTabs from "@/components/ui/pokemonDetailTabs";
-import { usePokemonDetails } from "@/hooks/use-pokemon";
+import { usePokemonAbout, usePokemonEvolution } from "@/hooks/use-pokemon";
 import { getTypeColor, paramToString } from "@/utils/helpers";
 import { useLocalSearchParams } from "expo-router";
+import React from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -16,11 +17,22 @@ export default function PokemonDetailScreen() {
   const { name: rawName } = useLocalSearchParams<{ name: string }>();
 
   const name = paramToString(rawName);
-  const { data, isLoading, error } = usePokemonDetails(name);
+
+  const {
+    data: about,
+    isLoading: aboutLoading,
+    isError: aboutError,
+  } = usePokemonAbout(name);
+
+  const {
+    data: evolution,
+    isLoading: evolutionLoading,
+    isError: evolutionError,
+  } = usePokemonEvolution(name);
 
   if (!name) return null;
-
-  if (isLoading) {
+  // global guard for about (page header depends on about)
+  if (aboutLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
@@ -31,7 +43,7 @@ export default function PokemonDetailScreen() {
     );
   }
 
-  if (error || !data) {
+  if (aboutError || !about) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
@@ -40,7 +52,6 @@ export default function PokemonDetailScreen() {
       </SafeAreaView>
     );
   }
-  const { about, evolution } = data;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,10 +92,12 @@ export default function PokemonDetailScreen() {
           <PokemonImage id={about.id} size={200} />
         </View>
 
-        <View style={{height: 450, paddingTop: 24, backgroundColor: "white"}}>
+        <View style={{ height: 450, paddingTop: 24, backgroundColor: "white" }}>
           <PokemonDetailTabs
             about={about}
-            evolution={evolution}
+            evolution={evolution ?? []}
+            evolutionLoading={evolutionLoading}
+            evolutionError={evolutionError}
           />
         </View>
         <View style={{ height: 218 }} />
